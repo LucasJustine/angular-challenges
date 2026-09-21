@@ -1,0 +1,8 @@
+<div class="todo">
+  <div class="todo-content">
+    <h3>{{ id() }}</h3>
+    <p>{{ text() }}</p>
+    <p [class]="completedClass()">{{ completed() }}</p>
+    <button (click)="updateTodo()">Update</button>
+  </div>
+</div>
