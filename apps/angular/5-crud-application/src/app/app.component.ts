@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,45 +21,22 @@ import { TodoStore } from './service/todo.service';
         (onUpdateTodo)="update($event)"></app-todo>
     }
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [],
 })
 export class AppComponent implements OnInit {
-  private http = inject(HttpClient);
   private store = inject(TodoStore);
 
   todos = this.store.todos;
 
   ngOnInit(): void {
-    this.http
-      .get<Todo[]>('https://jsonplaceholder.typicode.com/todos')
-      .subscribe((todos) => {
-        this.store.addAll(todos);
-      });
+    this.store.loadTodos();
   }
 
   update(todoId: number) {
     const todo: Todo | undefined = this.todos().find((t) => t.id === todoId);
-    if (!todo) {
-      return;
-    }
-    this.http
-      .put<Todo>(
-        `https://jsonplaceholder.typicode.com/todos/${todo.id}`,
-        JSON.stringify({
-          todo: todo.id,
-          title: randText(),
-          userId: todo.userId,
-          completed: !todo.completed,
-        }),
-        {
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-          },
-        },
-      )
-      .subscribe((todoUpdated: any) => {
-        this.store.update(todoUpdated.id, todoUpdated);
-      });
+    if (!todo) return;
+
+    this.store.updateTodoApi(todo, randText());
   }
 }
