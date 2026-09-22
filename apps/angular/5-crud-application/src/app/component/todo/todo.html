@@ -1,8 +1,16 @@
 <div class="todo">
-  <div class="todo-content">
-    <h3>{{ id() }}</h3>
-    <p>{{ text() }}</p>
-    <p [class]="completedClass()">{{ completed() }}</p>
-    <button (click)="updateTodo()">Update</button>
-  </div>
+    <div class="todo-content">
+        @if (loading()) {
+            <mat-spinner></mat-spinner>
+        } @else if (error()) {
+            <p class="error">{{ error() }}</p>
+        } @else {
+            <h3>{{ todo().id }}</h3>
+            <p>{{ todo().title }}</p>
+            <p [class]="completedClass()">{{ todo().completed }}</p>
+        }
+        
+        <button [disabled]="loading()" (click)="updateTodo()">Update</button>
+        <button [disabled]="loading()" (click)="deleteTodo()">Delete</button>
+    </div>
 </div>
