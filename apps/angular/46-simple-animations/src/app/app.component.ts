@@ -21,7 +21,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="mx-20 my-40 flex gap-5">
-      <section>
+      <section class="fade">
         <div>
           <h3>2008</h3>
           <p>
@@ -54,37 +54,21 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       </section>
 
       <section>
-        <div class="list-item">
-          <span>Name:</span>
-          <span>Samuel</span>
-        </div>
-
-        <div class="list-item">
-          <span>Age:</span>
-          <span>28</span>
-        </div>
-
-        <div class="list-item">
-          <span>Birthdate:</span>
-          <span>02.11.1995</span>
-        </div>
-
-        <div class="list-item">
-          <span>City:</span>
-          <span>Berlin</span>
-        </div>
-
-        <div class="list-item">
-          <span>Language:</span>
-          <span>English</span>
-        </div>
-
-        <div class="list-item">
-          <span>Like Pizza:</span>
-          <span>Hell yeah</span>
-        </div>
+        @for (item of items; track item) {
+          <div class="list-item" style="--index: {{ $index }};">
+            <span>{{ item.name }}</span>
+            <span>{{ item.age }}</span>
+          </div>
+        }
       </section>
     </div>
   `,
 })
-export class AppComponent {}
+export class AppComponent {
+  readonly items = [
+    { name: 'John', age: 30 },
+    { name: 'Jane', age: 25 },
+    { name: 'Bob', age: 40 },
+    { name: 'Alice', age: 35 },
+  ];
+}
